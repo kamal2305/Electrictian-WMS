@@ -1,0 +1,141 @@
+/* Static Styles replacing theme variables */
+:root {
+  /* Primary Colors */
+  --primary-color: #057dcd;
+  --primary-light: #43b0f1;
+  --primary-ultra-light: #6dc0f1;
+  
+  /* Background Colors */
+  --bg-off-white: #e8eef1;
+  --bg-white: #bfdff1;
+  --bg-dark: #1e3d58;
+  
+  /* Text Colors */
+  --text-dark: #1e3d58;
+  --text-medium: #057dcd;
+  --text-light: #43b0f1;
+  
+  /* Status Colors */
+  --status-success: #6dc0f1;
+  --status-warning: #96cff1;
+  --status-error: #057dcd;
+  --status-info: #abd7f1;
+  
+  /* UI Element Colors */
+  --border-color: #1e3d58;
+  --shadow-color: rgba(30, 61, 88, 0.2);
+  --hover-color: rgba(5, 125, 205, 0.1);
+  --active-color: rgba(67, 176, 241, 0.3);
+  
+  /* Button Colors */
+  --btn-primary: #057dcd;
+  --btn-primary-hover: #43b0f1;
+  --btn-secondary: #6dc0f1;
+  --btn-secondary-hover: #96cff1;
+  --btn-text: #ffffff;
+  
+  /* Form Element Colors */
+  --input-bg: #e8eef1;
+  --input-border: #abd7f1;
+  --input-focus: #057dcd;
+  
+  /* Chart Colors */
+  --chart-color-1: #057dcd;
+  --chart-color-2: #43b0f1;
+  --chart-color-3: #6dc0f1;
+  --chart-color-4: #96cff1;
+  --chart-color-5: #abd7f1;  
+  /* Main Colors */
+  --color-primary: #057dcd;
+  --color-secondary: #43b0f1;
+  --color-accent: #6dc0f1;
+  --color-muted: #96cff1;
+  --color-danger: #1e3d58;
+  --color-dark: #1e3d58;
+  --color-darker: #192f44;
+  --color-darkest: #132436;
+  --color-black: #0c1824;
+  --color-near-black: #050c12;
+
+  /* Text Colors */
+  --text-primary: #1e3d58;
+  --text-secondary: #057dcd;
+  --text-muted: #43b0f1;
+
+  /* Background Colors */
+  --bg-primary: var(--bg-off-white);
+  --bg-secondary: var(--bg-white);
+  --bg-tertiary: var(--color-accent);
+  --bg-hover: var(--color-muted);
+  /* Border Colors */
+  --border-color: var(--color-accent);
+  --border-hover: var(--color-secondary);
+
+  /* Component Colors */
+  --card-bg: var(--bg-off-white);
+  --input-bg: var(--bg-off-white);
+  --button-bg: var(--color-primary);
+  --button-hover: var(--color-secondary);
+  --button-active: var(--color-accent);
+
+  /* Status Colors */
+  --success: var(--color-accent);
+  --warning: var(--color-muted);
+  --error: var(--color-primary);
+  --info: var(--color-secondary);
+
+  /* Chart Colors */
+  --chart-blue: var(--color-primary);
+  --chart-green: var(--color-secondary);
+  --chart-orange: var(--color-accent);
+  --chart-purple: var(--color-muted);
+  --chart-red: var(--color-danger);
+}
+
+/* Global Styles */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+/* Card Styles */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+/* Button Styles */
+.btn {
+  background-color: var(--button-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background-color: var(--button-hover);
+  border-color: var(--border-hover);
+}
+
+.btn:active {
+  background-color: var(--button-active);
+}
+
+/* Form Styles */
+input, select, textarea {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}

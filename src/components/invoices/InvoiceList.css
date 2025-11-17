@@ -1,0 +1,239 @@
+.invoice-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.invoice-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.invoice-list-header h1 {
+  font-size: 24px;
+  color: #000000;
+  margin: 0;
+  font-weight: 600;
+}
+
+.invoice-filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.filter-group {
+  flex: 1;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #000000;
+  font-size: 14px;
+}
+
+.filter-group input,
+.filter-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.invoice-table th {
+  background-color: #f8f9fa;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #000000;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.invoice-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  color: #000000;
+}
+
+.invoice-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.invoice-amount {
+  font-weight: 600;
+  color: #333;
+}
+
+.job-client {
+  font-weight: 500;
+  color: #333;
+}
+
+.job-title {
+  font-size: 12px;
+  color: #777;
+  margin-top: 3px;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-paid {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-overdue {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.3s;
+}
+
+.btn-view {
+  background-color: #057dcd;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(5, 125, 205, 0.2);
+}
+
+.btn-view:hover {
+  background-color: #43b0f1;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(5, 125, 205, 0.3);
+}
+
+.btn-edit {
+  background-color: #6dc0f1;
+  color: #1e3d58;
+  border: 1px solid #bfdff1;
+}
+
+.btn-edit:hover {
+  background-color: #96cff1;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(109, 192, 241, 0.2);
+}
+
+.btn-delete {
+  background-color: #1e3d58;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(30, 61, 88, 0.2);
+}
+
+.btn-delete:hover {
+  background-color: #057dcd;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(5, 125, 205, 0.3);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .invoice-list-container {
+    background-color: #1a1a1a;
+  }
+
+  .invoice-list-header h1 {
+    color: #ffffff;
+  }
+
+  .invoice-filters {
+    background-color: #2d2d2d;
+    border-color: #404040;
+  }
+
+  .filter-group label {
+    color: #ffffff;
+  }
+
+  .filter-group input,
+  .filter-group select {
+    background-color: #333333;
+    border-color: #404040;
+    color: #ffffff;
+  }
+
+  .invoice-table {
+    background-color: #2d2d2d;
+  }
+
+  .invoice-table th {
+    background-color: #333333;
+    color: #ffffff;
+    border-bottom-color: #404040;
+  }
+
+  .invoice-table td {
+    color: #ffffff;
+    border-bottom-color: #404040;
+  }
+
+  .invoice-table tr:hover {
+    background-color: #333333;
+  }
+  .btn-edit {
+    background-color: #6dc0f1;
+    color: #1e3d58;
+    border-color: #abd7f1;
+  }
+
+  .btn-edit:hover {
+    background-color: #96cff1;
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 768px) {
+  .invoice-filters {
+    flex-direction: column;
+  }
+  
+  .invoice-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

@@ -1,0 +1,225 @@
+.materials-container {
+  background-color: #ffffff;
+  border: 1px solid #abd7f1;
+  border-radius: 8px;
+  padding: 24px;
+  margin-top: 24px;
+  box-shadow: 0 2px 8px rgba(30, 61, 88, 0.08);
+}
+
+.materials-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #bfdff1;
+}
+
+.materials-header h3 {
+  margin: 0;
+  color: #1e3d58;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.total-cost {
+  font-size: 1.1rem;
+  color: #1e3d58;
+  background-color: #e8eef1;
+  padding: 10px 16px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.cost-value {
+  font-weight: 700;
+  color: #057dcd;
+  margin-left: 8px;
+}
+
+.materials-loading,
+.materials-error,
+.materials-empty {
+  padding: 24px;
+  text-align: center;
+  color: #1e3d58;
+  font-style: italic;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(30, 61, 88, 0.08);
+  margin: 24px 0;
+}
+
+.materials-error {
+  color: #057dcd;
+  background-color: #e8eef1;
+  border: 1px solid #bfdff1;
+}
+
+.materials-table-container {
+  overflow-x: auto;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(30, 61, 88, 0.05);
+}
+
+.materials-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.95rem;
+}
+
+.materials-table th {
+  background-color: #e8eef1;
+  color: #1e3d58;
+  font-weight: 600;
+  text-align: left;
+  padding: 14px 16px;
+  border-bottom: 2px solid #bfdff1;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.materials-table td {
+  padding: 16px;
+  border-bottom: 1px solid #bfdff1;
+  vertical-align: middle;
+  color: #1e3d58;
+}
+
+.materials-table tr:last-child td {
+  border-bottom: none;
+}
+
+.materials-table tr:hover {
+  background-color: #e8eef1;
+}
+
+.material-name {
+  font-weight: 600;
+  color: #1e3d58;
+}
+
+.material-notes {
+  font-size: 0.85rem;
+  color: #057dcd;
+  margin-top: 6px;
+  font-style: italic;
+  padding: 4px 0;
+  max-width: 400px;
+}
+
+.total-price {
+  font-size: 0.85rem;
+  color: #057dcd;
+  margin-top: 6px;
+  font-weight: 600;
+  background-color: #e8eef1;
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.billable-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.billable-tag.billable {
+  background-color: #6dc0f1;
+  color: #1e3d58;
+  box-shadow: 0 1px 3px rgba(109, 192, 241, 0.3);
+}
+
+.billable-tag.non-billable {
+  background-color: #e8eef1;
+  color: #1e3d58;
+  border: 1px solid #bfdff1;
+}
+
+.action-buttons {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn-delete {
+  background-color: #057dcd;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(5, 125, 205, 0.3);
+}
+
+.btn-delete:hover {
+  background-color: #43b0f1;
+  box-shadow: 0 2px 5px rgba(5, 125, 205, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #96cff1;
+  box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  .materials-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .materials-table th,
+  .materials-table td {
+    padding: 12px 8px;
+    font-size: 0.85rem;
+  }
+  
+  .total-cost {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .materials-container {
+    padding: 16px;
+  }
+  
+  .material-notes {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .materials-table th:nth-child(4),
+  .materials-table td:nth-child(4),
+  .materials-table th:nth-child(5),
+  .materials-table td:nth-child(5) {
+    display: none;
+  }
+  
+  .material-notes {
+    max-width: 150px;
+  }
+  
+  .materials-table th,
+  .materials-table td {
+    padding: 10px 6px;
+    font-size: 0.8rem;
+  }
+}

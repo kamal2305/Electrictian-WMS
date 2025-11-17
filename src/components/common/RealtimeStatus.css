@@ -1,0 +1,80 @@
+.realtime-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-off-white);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+}
+
+.refresh-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.last-updated {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  color: var(--text-medium);
+}
+
+.auto-refresh-info {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.status-label {
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.time, .date {
+  color: var(--text-dark);
+}
+
+.ago {
+  color: var(--text-medium);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.refresh-btn {
+  min-width: 120px;
+  height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--btn-primary);
+  color: var(--btn-text);
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.refresh-btn:hover {
+  background-color: var(--btn-primary-hover);
+}
+
+.refresh-btn:disabled {
+  background-color: var(--text-light);
+  cursor: not-allowed;
+}
+
+/* Responsive design for small screens */
+@media (max-width: 768px) {
+  .realtime-status {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .refresh-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}

@@ -1,0 +1,144 @@
+.electrician-list-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.electrician-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.electrician-list-header h2 {
+  margin: 0;
+  color: var(--text-dark);
+}
+
+.search-filter {
+  margin-bottom: 2rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: var(--input-bg);
+  color: var(--text-dark);
+}
+
+.electrician-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.electrician-card {
+  background: var(--bg-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.electrician-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.electrician-card-header {
+  padding: 1.25rem;
+  background: var(--primary-ultra-light);
+  border-bottom: 1px solid var(--input-border);
+}
+
+.electrician-card-header h3 {
+  margin: 0;
+  color: var(--text-dark);
+  font-size: 1.25rem;
+}
+
+.electrician-card-body {
+  padding: 1.25rem;
+}
+
+.electrician-card-body p {
+  margin: 0.5rem 0;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+}
+
+.electrician-card-body i {
+  margin-right: 0.75rem;
+  color: var(--primary-color);
+  width: 16px;
+}
+
+.electrician-job-summary {
+  padding: 0 1.25rem 1rem;
+}
+
+.job-summary-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.job-summary-link:hover {
+  text-decoration: underline;
+  color: var(--primary-light);
+}
+
+.electrician-card-actions {
+  padding: 1rem 1.25rem;
+  background: var(--primary-ultra-light);
+  border-top: 1px solid var(--input-border);
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.no-results {
+  text-align: center;
+  padding: 2rem;
+  background: var(--primary-ultra-light);
+  border-radius: 8px;
+  color: var(--text-dark);
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-medium);
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #f44336;
+  background: #fff5f5;
+  border-radius: 4px;
+  border-left: 4px solid #f44336;
+}
+
+@media (max-width: 768px) {
+  .electrician-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .electrician-list-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+} 

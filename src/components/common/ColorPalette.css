@@ -1,0 +1,74 @@
+/* GitHub Color Palette */
+.color-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.color-swatch {
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.color-display {
+  height: 80px;
+  width: 100%;
+}
+
+.color-info {
+  padding: 10px;
+  background-color: var(--bg-off-white);
+  font-size: 12px;
+}
+
+.color-name {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.color-value {
+  font-family: monospace;
+  color: var(--text-dark);
+}
+
+/* Blue Theme Colors */
+.github-primary .color-display {
+  background-color: #e8eef1; /* Ultra Light Blue */
+}
+
+.github-secondary .color-display {
+  background-color: #bfdff1; /* Very Light Blue */
+}
+
+.github-accent .color-display {
+  background-color: #abd7f1; /* Light Blue */
+}
+
+.github-muted .color-display {
+  background-color: #96cff1; /* Medium Blue */
+}
+
+.github-dark .color-display {
+  background-color: #6dc0f1; /* Blue */
+}
+
+.github-darker .color-display {
+  background-color: #43b0f1; /* Bright Blue */
+}
+
+.github-darkest .color-display {
+  background-color: #057dcd; /* Deep Blue */
+}
+
+.github-black .color-display {
+  background-color: #1e3d58; /* Dark Blue */
+}
+
+.github-near-black .color-display {
+  background-color: #1e3d58; /* Dark Blue - duplicated for completeness */
+}
