@@ -18,6 +18,7 @@ const InvoiceForm = () => {
   const [formErrors, setFormErrors] = useState({});
   const [timeLogs, setTimeLogs] = useState([]);
   const [materials, setMaterials] = useState([]);
+  const [availableMaterials, setAvailableMaterials] = useState([]);
   
   const [formData, setFormData] = useState({
     job: preSelectedJobId || '',
@@ -73,9 +74,23 @@ const InvoiceForm = () => {
     }
   };
 
+  // Fetch available materials for dropdown selection
+  const fetchAvailableMaterials = useCallback(async () => {
+    try {
+      const res = await api.get('/materials');
+      const materialsData = res.data.data || [];
+      setAvailableMaterials(materialsData);
+    } catch (error) {
+      console.error('Error fetching materials:', error);
+      toast.error('Failed to load available materials');
+      setAvailableMaterials([]);
+    }
+  }, []);
+
   useEffect(() => {
     fetchJobs();
-  }, []);
+    fetchAvailableMaterials();
+  }, [fetchAvailableMaterials]);
   
   // Fetch invoice data if in edit mode
   useEffect(() => {
@@ -232,21 +247,29 @@ const InvoiceForm = () => {
         if (jobMaterialsRes.data.success) {
           const usedMaterials = jobMaterialsRes.data.data;
           
+          console.log('Raw materials from backend:', JSON.stringify(usedMaterials, null, 2));
+          
           usedMaterials.forEach(material => {
+            console.log('Processing material:', material);
+            
             // Add null safety checks for material object
-            if (!material || !material.material) {
+            if (!material || !material.material || !material.material._id) {
               console.warn('Invalid material data:', material);
               return; // Skip this material
             }
             
             const item = {
-              name: material.material.name || 'Unknown Material',
-              quantity: material.quantity || 0,
-              unitPrice: material.material.price || 0,
-              total: (material.quantity || 0) * (material.material.price || 0)
+              material: material.material._id,
+              materialName: material.material.name || 'Unknown Material',
+              quantity: parseInt(material.quantity) || 0,
+              unit: material.material.unit || 'pcs',
+              unitPrice: parseFloat(material.material.unitPrice || material.material.price) || 0
             };
+            item.total = item.quantity * item.unitPrice;
             totalMaterialCost += item.total;
             materialItems.push(item);
+            
+            console.log('Created material item:', item);
           });
         }
         
@@ -322,9 +345,79 @@ const InvoiceForm = () => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    const jobPrefix = job?.jobNumber ? job.jobNumber.substring(0, 3) : 'INV';
+    
+    // Safely extract job prefix
+    let jobPrefix = 'INV';
+    if (job?.jobNumber && typeof job.jobNumber === 'string' && job.jobNumber.length >= 3) {
+      jobPrefix = job.jobNumber.substring(0, 3);
+    }
     
     return `${jobPrefix}-${year}${month}-${random}`;
+  };
+  
+  // Material management functions
+  const handleMaterialSelect = (e) => {
+    const materialId = e.target.value;
+    if (!materialId) return;
+    
+    const selectedMaterial = availableMaterials.find(m => m._id === materialId);
+    if (!selectedMaterial) return;
+    
+    // Check if already added
+    if (materials.find(m => m.material === materialId)) {
+      toast.warning('This material is already added');
+      return;
+    }
+    
+    const newMaterial = {
+      material: selectedMaterial._id,
+      materialName: selectedMaterial.name,
+      quantity: 1,
+      unit: selectedMaterial.unit || 'unit',
+      unitPrice: parseFloat(selectedMaterial.unitPrice || selectedMaterial.price || 0),
+      total: parseFloat(selectedMaterial.unitPrice || selectedMaterial.price || 0)
+    };
+    
+    addMaterial(newMaterial);
+    e.target.value = ''; // Reset dropdown
+  };
+  
+  const addMaterial = (newMaterial) => {
+    const updatedMaterials = [...materials, newMaterial];
+    setMaterials(updatedMaterials);
+    recalculateMaterialCosts(updatedMaterials);
+  };
+  
+  const handleMaterialChange = (index, field, value) => {
+    const updatedMaterials = [...materials];
+    updatedMaterials[index][field] = field === 'quantity' || field === 'unitPrice' 
+      ? parseFloat(value) || 0 
+      : value;
+    
+    if (field === 'quantity' || field === 'unitPrice') {
+      updatedMaterials[index].total = updatedMaterials[index].quantity * updatedMaterials[index].unitPrice;
+    }
+    
+    setMaterials(updatedMaterials);
+    recalculateMaterialCosts(updatedMaterials);
+  };
+  
+  const removeMaterial = (index) => {
+    const updatedMaterials = materials.filter((_, i) => i !== index);
+    setMaterials(updatedMaterials);
+    recalculateMaterialCosts(updatedMaterials);
+  };
+  
+  const recalculateMaterialCosts = (updatedMaterials) => {
+    const totalMaterialCost = updatedMaterials.reduce((sum, item) => sum + (item.total || 0), 0);
+    setFormData(prev => ({
+      ...prev,
+      breakdown: {
+        ...prev.breakdown,
+        materialCosts: totalMaterialCost
+      },
+      materials: updatedMaterials
+    }));
   };
   
   const validateForm = () => {
@@ -357,10 +450,36 @@ const InvoiceForm = () => {
       
       const totalAmount = getTotalAmount();
       const invoiceData = {
-        ...formData,
+        job: formData.job,
+        invoiceNumber: formData.invoiceNumber,
+        clientName: formData.clientName,
+        clientEmail: formData.clientEmail,
+        clientPhone: formData.clientPhone,
+        breakdown: {
+          laborCosts: parseFloat(formData.breakdown.laborCosts) || 0,
+          materialCosts: parseFloat(formData.breakdown.materialCosts) || 0,
+          additionalFees: parseFloat(formData.breakdown.additionalFees) || 0,
+          taxRate: parseFloat(formData.breakdown.taxRate) || 0
+        },
+        materials: materials
+          .filter(mat => mat.quantity > 0)
+          .map(mat => ({
+            name: mat.materialName || mat.name,
+            quantity: parseInt(mat.quantity),
+            unitPrice: parseFloat(mat.unitPrice),
+            total: parseFloat(mat.quantity) * parseFloat(mat.unitPrice)
+          })),
+        status: formData.status,
+        issueDate: formData.issueDate,
+        dueDate: formData.dueDate,
+        notes: formData.notes,
+        termsAndConditions: formData.termsAndConditions,
         totalAmount
       };
-        if (isEditMode) {
+
+      console.log('Submitting invoice:', invoiceData);
+        
+      if (isEditMode) {
         await api.put(`/invoices/${id}`, invoiceData);
         toast.success('Invoice updated successfully!');
       } else {
@@ -438,7 +557,6 @@ const InvoiceForm = () => {
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                disabled={!isEditMode} // Only allow editing status in edit mode
               >
                 <option value="Draft">Draft</option>
                 <option value="Pending Approval">Pending Approval</option>
@@ -541,60 +659,86 @@ const InvoiceForm = () => {
         )}
         
         {/* Materials Details Section */}
-        {formData.job && materials.length > 0 && (
+        {formData.job && (
           <div className="form-section">
             <h3>Materials Used</h3>
+            
+            {/* Material Selection Dropdown */}
+            <div className="form-group" style={{ marginBottom: '15px' }}>
+              <label htmlFor="materialSelect">Add Material</label>
+              <select
+                id="materialSelect"
+                onChange={handleMaterialSelect}
+                className="form-control"
+              >
+                <option value="">-- Select Material to Add --</option>
+                {availableMaterials.map(material => (
+                  <option key={material._id} value={material._id}>
+                    {material.name} - ${parseFloat(material.unitPrice || material.price || 0).toFixed(2)} per {material.unit || 'unit'}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
             <div className="table-responsive">
               <table className="detail-table">
                 <thead>
                   <tr>
                     <th>Material Name</th>
                     <th>Quantity</th>
+                    <th>Unit</th>
                     <th>Unit Price ($)</th>
                     <th>Total ($)</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {materials.map((item, index) => (
                     <tr key={index}>
-                      <td>{item.name}</td>
-                      <td>{item.quantity}</td>
+                      <td>{item.materialName || item.name}</td>
+                      <td>
+                        <input
+                          type="number"
+                          value={item.quantity}
+                          onChange={(e) => handleMaterialChange(index, 'quantity', e.target.value)}
+                          min="0"
+                          step="1"
+                          className="small-input"
+                        />
+                      </td>
+                      <td>{item.unit || 'unit'}</td>
                       <td>
                         <input
                           type="number"
                           value={item.unitPrice}
-                          onChange={(e) => {
-                            const newPrice = parseFloat(e.target.value) || 0;
-                            const newMaterials = [...materials];
-                            newMaterials[index].unitPrice = newPrice;
-                            newMaterials[index].total = newPrice * newMaterials[index].quantity;
-                            
-                            setMaterials(newMaterials);
-                            
-                            // Update material costs
-                            const newMaterialCosts = newMaterials.reduce(
-                              (sum, item) => sum + item.total, 0
-                            );
-                            
-                            setFormData(prev => ({
-                              ...prev,
-                              breakdown: {
-                                ...prev.breakdown,
-                                materialCosts: newMaterialCosts
-                              },
-                              materials: newMaterials
-                            }));
-                          }}
+                          onChange={(e) => handleMaterialChange(index, 'unitPrice', e.target.value)}
                           min="0"
                           step="0.01"
                           className="small-input"
                         />
                       </td>
-                      <td>${item.total.toFixed(2)}</td>
+                      <td>${(item.total || 0).toFixed(2)}</td>
+                      <td>
+                        <button
+                          type="button"
+                          onClick={() => removeMaterial(index)}
+                          className="btn-delete"
+                          style={{ padding: '5px 10px', fontSize: '0.85em' }}
+                        >
+                          Remove
+                        </button>
+                      </td>
                     </tr>
                   ))}
+                  {materials.length === 0 && (
+                    <tr>
+                      <td colSpan="6" style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                        No materials added. Select a material from the dropdown above to add.
+                      </td>
+                    </tr>
+                  )}
                   <tr className="total-row">
-                    <td colSpan="3"><strong>Total Material Cost</strong></td>
+                    <td colSpan="5"><strong>Total Material Cost</strong></td>
                     <td><strong>${(parseFloat(formData.breakdown.materialCosts) || 0).toFixed(2)}</strong></td>
                   </tr>
                 </tbody>
